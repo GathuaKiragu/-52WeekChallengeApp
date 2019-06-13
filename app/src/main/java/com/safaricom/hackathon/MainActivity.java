@@ -9,7 +9,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -35,8 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mHeaderLayout;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLayout = findViewById(R.id.amountLayout);
         mCalculate.setOnClickListener(this);
         mCalculate.setEnabled(false);
+        mCalculate.setAlpha(.5f);
+
         mHeaderLayout = findViewById(R.id.headerLayout);
-
-
         mAdapter = new ChallengeDataAdapter(mData);
 
 
@@ -70,17 +67,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startingAmount = mStartingAmount.getText().toString().trim();
                 if (!startingAmount.isEmpty()) {
                     mCalculate.setEnabled(true);
+                    mCalculate.setAlpha(1);
                 }
             }
         });
         recyclerView =  findViewById(R.id.recycler_view1);
 
+    }
+
+
+    //Onclick function
+    @Override
+    public void onClick(View v) {
+        if(Integer.parseInt(startingAmount) <= 0){
+            mLayout.setError("Deposit amount must be greater than Ksh.1");
+        }else if(Integer.parseInt(startingAmount) > 50000000){
+            mLayout.setError("Deposit amount must be less than Ksh.50,000,000");
+
+        }else {
+            computeValues();
+        }
+    }
+
+
+    private void computeValues() {
+        mHeaderLayout.setVisibility(View.VISIBLE);
+        mData.clear();
+
+        int weeks = 53;
+        for (int i = 1; i < weeks; i++) {
+            weeksList.add(i);
+            amountList.add(i * Integer.parseInt(startingAmount));
+            totalAmountList.add(i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)));
+            ChallengeModelClass challengeModelClass = new ChallengeModelClass(i, i * Integer.parseInt(startingAmount), (i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount))));
+            mData.add(challengeModelClass);
+            mAdapter.notifyDataSetChanged();
+        }
+
         mAdapter = new ChallengeDataAdapter(mData);
 
         recyclerView.setHasFixedSize(true);
 
-        // vertical RecyclerView
-        // keep challenge_list_row.xml width to `match_parent`
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
 
@@ -94,30 +121,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View v) {
-        if(Integer.parseInt(startingAmount) <= 0){
-            mLayout.setError("Deposit amount must be greater than Ksh.1");
-        }else if(Integer.parseInt(startingAmount) > 50000000){
-            mLayout.setError("Deposit amount must be less than Ksh.50,000,000");
-
-        }else {
-            computeValues();
-
-        }
-    }
-
-
-    private void computeValues() {
-        mHeaderLayout.setVisibility(View.VISIBLE);
-        int weeks = 53;
-        for (int i = 1; i < weeks; i++) {
-            weeksList.add(i);
-            amountList.add(i * Integer.parseInt(startingAmount));
-            totalAmountList.add(i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)));
-            ChallengeModelClass challengeModelClass = new ChallengeModelClass(i, i * Integer.parseInt(startingAmount), (i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)))  );
-            mData.add(challengeModelClass);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
 }

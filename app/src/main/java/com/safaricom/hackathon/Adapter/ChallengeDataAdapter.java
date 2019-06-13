@@ -39,6 +39,8 @@ public class ChallengeDataAdapter extends RecyclerView.Adapter<ChallengeDataAdap
         return new MyViewHolder(itemView);
     }
 
+
+    //Binding values to views
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ChallengeModelClass challenge = challangeList.get(position);
