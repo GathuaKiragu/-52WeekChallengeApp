@@ -2,4 +2,7 @@
     <string name="app_name">52WeekChallange App</string>
     <string name="amount">Starting Amount</string>
     <string name="calculate">Calculate</string>
+    <string name="week">Week#</string>
+    <string name="deposit">Deposit</string>
+    <string name="total">Total</string>
 </resources>

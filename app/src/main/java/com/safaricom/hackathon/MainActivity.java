@@ -4,12 +4,18 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
+import com.safaricom.hackathon.Adapter.ChallengeDataAdapter;
 import com.safaricom.hackathon.Models.ChallengeModelClass;
 
 import java.util.ArrayList;
@@ -23,7 +29,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Integer> totalAmountList = new ArrayList<>();
     private String startingAmount;
     private TextInputLayout mLayout;
-    public ArrayList<ChallengeModelClass> mData = new ArrayList<>();
+    public static ArrayList<ChallengeModelClass> mData = new ArrayList<>();
+    private ChallengeDataAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private LinearLayout mHeaderLayout;
+
+
 
 
     @Override
@@ -35,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLayout = findViewById(R.id.amountLayout);
         mCalculate.setOnClickListener(this);
         mCalculate.setEnabled(false);
+        mHeaderLayout = findViewById(R.id.headerLayout);
+
+
+        mAdapter = new ChallengeDataAdapter(mData);
 
 
         //Text Watcher
@@ -58,49 +73,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        recyclerView =  findViewById(R.id.recycler_view1);
+
+        mAdapter = new ChallengeDataAdapter(mData);
+
+        recyclerView.setHasFixedSize(true);
+
+        // vertical RecyclerView
+        // keep challenge_list_row.xml width to `match_parent`
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        // adding inbuilt divider line
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        // adding custom divider line with padding 16dp
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
     public void onClick(View v) {
-        if(Integer.parseInt(startingAmount) < 0){
+        if(Integer.parseInt(startingAmount) <= 0){
             mLayout.setError("Deposit amount must be greater than Ksh.1");
         }else if(Integer.parseInt(startingAmount) > 50000000){
             mLayout.setError("Deposit amount must be less than Ksh.50,000,000");
 
         }else {
             computeValues();
-        }
 
+        }
     }
 
 
     private void computeValues() {
-        int weeks = 52;
-        for (int i = 0; i < weeks; i++) {
+        mHeaderLayout.setVisibility(View.VISIBLE);
+        int weeks = 53;
+        for (int i = 1; i < weeks; i++) {
             weeksList.add(i);
             amountList.add(i * Integer.parseInt(startingAmount));
             totalAmountList.add(i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)));
             ChallengeModelClass challengeModelClass = new ChallengeModelClass(i, i * Integer.parseInt(startingAmount), (i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)))  );
             mData.add(challengeModelClass);
+            mAdapter.notifyDataSetChanged();
         }
-
-
-
-        for(ChallengeModelClass ch : mData){
-            Log.e("Weeks", "Weeks" + ch.getWeek());
-
-        }
-//
-//        Log.e("Amount to Deposit", "Weeks" + amountList.toString());
-//        Log.e("Total Amount", "Weeks" + totalAmountList.toString());
-//
-//
-
-
-
-
-
-
-
     }
 }
