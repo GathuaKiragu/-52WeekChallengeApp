@@ -18,8 +18,10 @@ import com.safaricom.hackathon.Adapter.ChallengeDataAdapter;
 import com.safaricom.hackathon.Models.ChallengeModelClass;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
     //Initialization
     private Button mCalculate;
     private TextInputEditText mStartingAmount;
@@ -41,13 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCalculate = findViewById(R.id.next);
         mStartingAmount = findViewById(R.id.startingAmount);
         mLayout = findViewById(R.id.amountLayout);
-        mCalculate.setOnClickListener(this);
         mCalculate.setEnabled(false);
         mCalculate.setAlpha(.5f);
-
+        mCalculate.setVisibility(View.GONE);
         mHeaderLayout = findViewById(R.id.headerLayout);
         mAdapter = new ChallengeDataAdapter(mData);
-
+        recyclerView =  findViewById(R.id.recycler_view1);
 
         //Text Watcher
         mStartingAmount.addTextChangedListener(new TextWatcher() {
@@ -68,34 +69,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!startingAmount.isEmpty()) {
                     mCalculate.setEnabled(true);
                     mCalculate.setAlpha(1);
+
+                    computeValues();
+
                 }
             }
         });
-        recyclerView =  findViewById(R.id.recycler_view1);
 
     }
-
-
-    //Onclick function
-    @Override
-    public void onClick(View v) {
-        if(Integer.parseInt(startingAmount) <= 0){
-            mLayout.setError("Deposit amount must be greater than Ksh.1");
-        }else if(Integer.parseInt(startingAmount) > 50000000){
-            mLayout.setError("Deposit amount must be less than Ksh.50,000,000");
-
-        }else {
-            computeValues();
-        }
-    }
-
 
     private void computeValues() {
         mHeaderLayout.setVisibility(View.VISIBLE);
         mData.clear();
 
+        Calendar c = Calendar.getInstance();
+        Date date=c.getTime();
+
+        c.setTime(date);
+
+        int weekOfYear = c.get(Calendar.WEEK_OF_YEAR);
         int weeks = 53;
-        for (int i = 1; i < weeks; i++) {
+        for (int i = weekOfYear; i < weeks; i++) {
             weeksList.add(i);
             amountList.add(i * Integer.parseInt(startingAmount));
             totalAmountList.add(i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)));
@@ -118,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
-
     }
 
 }
