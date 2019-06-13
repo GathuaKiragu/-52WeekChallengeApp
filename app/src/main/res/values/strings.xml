@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">52WeekChallange App</string>
+    <string name="amount">Starting Amount</string>
+    <string name="calculate">Calculate</string>
 </resources>
