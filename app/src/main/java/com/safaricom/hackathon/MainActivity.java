@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Integer> totalAmountList = new ArrayList<>();
     private String startingAmount;
     private TextInputLayout mLayout;
-    public static ArrayList<ChallengeModelClass> mData = new ArrayList<>();
+    public  ArrayList<ChallengeModelClass> mData = new ArrayList<>();
     private ChallengeDataAdapter mAdapter;
     private RecyclerView recyclerView;
     private LinearLayout mHeaderLayout;
