@@ -40,12 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCalculate = findViewById(R.id.next);
         mStartingAmount = findViewById(R.id.startingAmount);
         mLayout = findViewById(R.id.amountLayout);
-        mCalculate.setEnabled(false);
-        mCalculate.setAlpha(.5f);
-        mCalculate.setVisibility(View.GONE);
         mHeaderLayout = findViewById(R.id.headerLayout);
         mAdapter = new ChallengeDataAdapter(mData);
         recyclerView =  findViewById(R.id.recycler_view1);
@@ -82,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
         mHeaderLayout.setVisibility(View.VISIBLE);
         mData.clear();
 
-        Calendar c = Calendar.getInstance();
-        Date date=c.getTime();
-
-        c.setTime(date);
-
-        int weekOfYear = c.get(Calendar.WEEK_OF_YEAR);
+//        Calendar c = Calendar.getInstance();
+//        Date date=c.getTime();
+//
+//        c.setTime(date);
+//
+//        int weekOfYear = c.get(Calendar.WEEK_OF_YEAR);
         int weeks = 53;
-        for (int i = weekOfYear; i < weeks; i++) {
+        for (int i = 1; i < weeks; i++) {
             weeksList.add(i);
             amountList.add(i * Integer.parseInt(startingAmount));
             totalAmountList.add(i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)));

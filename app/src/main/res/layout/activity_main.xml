@@ -33,16 +33,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/next"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/colorAccent"
-                android:fontFamily="@font/karla_regular"
-                android:text="@string/calculate"
-                android:textColor="#fff" />
-
             <include
                 layout="@layout/list_view_header"
                 android:visibility="gone" />
