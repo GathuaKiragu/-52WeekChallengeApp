@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.safaricom.hackathon.Models.ChallengeModelClass;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Integer> totalAmountList = new ArrayList<>();
     private String startingAmount;
     private TextInputLayout mLayout;
+    public ArrayList<ChallengeModelClass> mData = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +80,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             weeksList.add(i);
             amountList.add(i * Integer.parseInt(startingAmount));
             totalAmountList.add(i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)));
-
+            ChallengeModelClass challengeModelClass = new ChallengeModelClass(i, i * Integer.parseInt(startingAmount), (i * Integer.parseInt(startingAmount) + ((i - 1) * Integer.parseInt(startingAmount)))  );
+            mData.add(challengeModelClass);
         }
 
-        Log.e("Weeks", "Weeks" + weeksList.toString());
-        Log.e("Amount to Deposit", "Weeks" + amountList.toString());
-        Log.e("Total Amount", "Weeks" + totalAmountList.toString());
+
+
+        for(ChallengeModelClass ch : mData){
+            Log.e("Weeks", "Weeks" + ch.getWeek());
+
+        }
+//
+//        Log.e("Amount to Deposit", "Weeks" + amountList.toString());
+//        Log.e("Total Amount", "Weeks" + totalAmountList.toString());
+//
+//
+
+
+
+
+
 
 
     }
